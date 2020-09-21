@@ -7,8 +7,10 @@ use devnullius\i18n\models\Language;
 use devnullius\i18n\Module;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
+use function is_string;
 
 class I18N extends \yii\i18n\I18N
 {
@@ -39,7 +41,8 @@ class I18N extends \yii\i18n\I18N
      */
     public function init()
     {
-        Yii::$app->sourceLanguage = $this->getDevelopSourceLanguage();
+        $sourceLanguage = $this->getDevelopSourceLanguage();
+        Yii::$app->sourceLanguage = $sourceLanguage;
         if (!isset($this->translations['*'])) {
             $this->translations['*'] = [
                 'class' => DbMessageSource::class,
@@ -47,7 +50,7 @@ class I18N extends \yii\i18n\I18N
                 'sourceMessageTable' => $this->getSourceTableName(),
                 'messageTable' => $this->getTranslationTableName(),
                 'on missingTranslation' => $this->getMissingTranslationHandlerPackage(),
-                'sourceLanguage' => $this->getDevelopSourceLanguage(),
+                'sourceLanguage' => $sourceLanguage,
                 'cachingDuration' => $this->getCachingDurationValue(),
                 'enableCaching' => $this->isCacheEnabled(),
             ];
@@ -59,7 +62,7 @@ class I18N extends \yii\i18n\I18N
                 'sourceMessageTable' => $this->getSourceTableName(),
                 'messageTable' => $this->getTranslationTableName(),
                 'on missingTranslation' => $this->getMissingTranslationHandlerPackage(),
-                'sourceLanguage' => $this->getDevelopSourceLanguage(),
+                'sourceLanguage' => $sourceLanguage,
                 'cachingDuration' => $this->getCachingDurationValue(),
                 'enableCaching' => $this->isCacheEnabled(),
             ];
@@ -99,6 +102,24 @@ class I18N extends \yii\i18n\I18N
 
     final public function getDevelopSourceLanguage(): string
     {
+        try {
+            /**
+             * @var $defaultLanguage string
+             */
+            $languageTableName = $this->getLanguageTableName();
+            $query = <<<SQL
+SELECT ' . {$languageTableName} . '.language_id FROM ' . {$languageTableName} . '
+WHERE ' . {$languageTableName} . '.deleted = false AND ' . {$languageTableName} . ' .default = true limit 1;
+SQL;
+            $defaultLanguage = Yii::$app->getDb()->createCommand($query)->queryScalar();
+            if (!is_string($defaultLanguage)) {
+                throw new Exception('Reading default source language failed, fallback to ' . $this->sourceLanguage . '.');
+            }
+            $this->sourceLanguage = $defaultLanguage;
+        } catch (Exception $e) {
+            Yii::$app->errorHandler->logException($e);
+        }
+
         return $this->sourceLanguage;
     }
 

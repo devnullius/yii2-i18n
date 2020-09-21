@@ -18,6 +18,27 @@ use yii\helpers\ArrayHelper;
 use function assert;
 use function count;
 
+/**
+ * Class Language
+ *
+ * @package devnullius\i18n\models
+ * @property string $language_id               [varchar(5)]
+ * @property int    $created_by                [bigint]  Modifier id of create, if 0 created from db, if -1 not registered user.
+ * @property int    $updated_by                [bigint]  Modifier id of update, if 0 created from db, if -1 not registered user.
+ * @property int    $created_at                [bigint]  Unix time-stamp of create date.
+ * @property int    $updated_at                [bigint]  Unix time-stamp of update date.
+ * @property string $modifier                  [varchar(255)]  Operation performer entity name.
+ * @property bool   $deleted                   [boolean]  If true row softly deleted, only marker.
+ *
+ * @property string $language                  [varchar(3)]
+ * @property string $country                   [varchar(3)]
+ * @property string $name                      [varchar(32)]
+ * @property string $name_short                [varchar(32)]
+ * @property string $name_ascii                [varchar(32)]
+ * @property string $name_ascii_short          [varchar(32)]
+ * @property int    $default                   [boolean]
+ * @property int    $status                    [boolean]
+ */
 final class Language extends ActiveRecord
 {
     /**
@@ -44,6 +65,9 @@ final class Language extends ActiveRecord
         return $i18n->getLanguageTableName();
     }
 
+    /**
+     * @return LanguageQuery
+     */
     public static function find(): LanguageQuery
     {
         return new LanguageQuery(static::class);
@@ -90,6 +114,11 @@ final class Language extends ActiveRecord
         );
     }
 
+    /**
+     * @param Language $language
+     *
+     * @throws Exception
+     */
     public static function persist(self $language): void
     {
         if ($language->default === FlagHelper::IS_DEFAULT) {
@@ -106,6 +135,7 @@ final class Language extends ActiveRecord
                 $entity->default = FlagHelper::IS_NOT_DEFAULT;
                 $entity->save();
             }
+            $language->status = true;
         }
         if (!$language->save()) {
             throw new Exception('Save operation failed.');
