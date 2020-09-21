@@ -14,11 +14,16 @@ assert($searchModel instanceof SourceMessageSearch);
 assert($dataProvider instanceof ActiveDataProvider);
 
 $this->title = Module::t('Translations');
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['/translations']];
 ?>
 <!-- Default box -->
 <div class="card card-outline card-success">
     <div class="card-header">
+        <?= Html::a(
+            Html::tag('i', '', ['class' => 'fa fa-language']),
+            ['/translations/language'],
+            ['class' => 'btn btn-primary', 'title' => Module::t('Language')]
+        ) ?>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fas fa-minus"></i></button>

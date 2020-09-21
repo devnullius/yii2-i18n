@@ -98,10 +98,9 @@ class m200921_081819_I18nLanguages extends Migration
 
             'language' => $this->string(5)->notNull(),
             'translation' => $this->text()->null(),
-            'PRIMARY KEY (id, language)',
         ], $tableOptions);
 
-        $this->addPrimaryKey('language_translate', $sourceTable, ['id', 'language']);
+        $this->addPrimaryKey('pk-language_translate', $translationTable, ['id', 'language']);
 
         $this->createIndex('language_translate_idx_language', $translationTable, 'language');
 

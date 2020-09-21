@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace devnullius\i18n\models;
 
+use devnullius\i18n\components\I18N;
 use devnullius\i18n\models\query\SourceMessageQuery;
 use devnullius\i18n\Module;
 use Yii;
@@ -11,6 +12,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class SourceMessage
@@ -101,7 +103,9 @@ class SourceMessage extends ActiveRecord
     public function initMessages(): void
     {
         $messages = [];
-        foreach (Yii::$app->getI18n()->languages as $language) {
+        $activeLanguages = Language::find()->andWhere(['status' => true])->all();
+        $languages = ArrayHelper::getColumn($activeLanguages, 'language_id');
+        foreach (I18N::initLanguageList() as $language) {
             if (!isset($this->messages[$language])) {
                 $message = new Message;
                 $message->language = $language;

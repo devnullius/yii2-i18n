@@ -10,11 +10,17 @@ assert($this instanceof View);
 assert($model instanceof SourceMessage);
 
 $this->title = Module::t('Update') . ': ' . $model->message;
+$this->params['breadcrumbs'][] = ['label' => Module::t('Translations'), 'url' => ['/translations']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <!-- Default box -->
 <div class="card card-outline card-success">
     <div class="card-header">
+        <?= Html::a(
+            Html::tag('i', '', ['class' => 'fa fa-arrow-left']),
+            ['/translations'],
+            ['class' => 'btn btn-default', 'title' => Module::t('Back')]
+        ) ?>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fas fa-minus"></i></button>
@@ -24,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <?php $form = ActiveForm::begin(); ?>
 
                 <?php foreach ($model->messages as $language => $message) : ?>
@@ -38,13 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="col-6">
-                <div class="col-md-12 margin-bottom">
-                    <div class="col-md-1">
-                        <?= Html::submitButton(Module::t('Update'), ['class' => 'btn btn-success']) ?>
-                    </div>
+            <?php if (count($model->messages) > 0) : ?>
+                <div class="form-group">
+                    <?= Html::submitButton(Module::t('Update'), ['class' => 'btn btn-success']) ?>
                 </div>
-            </div>
+            <?php else : ?>
+                <?= Module::t('Please activate at least one language.') ?>
+            <?php endif; ?>
             <?php $form::end(); ?>
         </div>
     </div>

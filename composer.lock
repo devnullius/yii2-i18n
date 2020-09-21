@@ -203,16 +203,16 @@
         },
         {
             "name": "devnullius/yii2-helper",
-            "version": "1.0.3",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devnullius/yii2-helper.git",
-                "reference": "5faee7795149aec1f698871c6f8744b4bfd6958f"
+                "reference": "bcb70ad1944e838fbbf869bb7b6598f7679971a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/devnullius/yii2-helper/zipball/5faee7795149aec1f698871c6f8744b4bfd6958f",
-                "reference": "5faee7795149aec1f698871c6f8744b4bfd6958f",
+                "url": "https://api.github.com/repos/devnullius/yii2-helper/zipball/bcb70ad1944e838fbbf869bb7b6598f7679971a2",
+                "reference": "bcb70ad1944e838fbbf869bb7b6598f7679971a2",
                 "shasum": ""
             },
             "require": {
@@ -259,10 +259,10 @@
             ],
             "description": "Base help module for different purposes",
             "support": {
-                "source": "https://github.com/devnullius/yii2-helper/tree/1.0.3",
+                "source": "https://github.com/devnullius/yii2-helper/tree/1.0.5",
                 "issues": "https://github.com/devnullius/yii2-helper/issues"
             },
-            "time": "2020-09-21T09:35:10+00:00"
+            "time": "2020-09-21T11:33:13+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

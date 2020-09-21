@@ -34,12 +34,6 @@ class I18N extends \yii\i18n\I18N
      */
     public function init()
     {
-        $activeLanguages = Language::find()->andWhere(['status' => true])->all();
-        $this->languages = ArrayHelper::getValue($activeLanguages, 'language_id');
-        if (!$this->languages) {
-            throw new InvalidConfigException('You should configure i18n component [language]');
-        }
-
         if (!isset($this->translations['*'])) {
             $this->translations['*'] = [
                 'class' => DbMessageSource::class,
@@ -65,6 +59,13 @@ class I18N extends \yii\i18n\I18N
             ];
         }
         parent::init();
+    }
+
+    final public static function initLanguageList(): array
+    {
+        $activeLanguages = Language::find()->andWhere(['status' => true])->all();
+
+        return ArrayHelper::getColumn($activeLanguages, 'language_id');
     }
 
     final public function getMissingTranslationHandlerPackage(): array

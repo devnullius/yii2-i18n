@@ -22,6 +22,9 @@ class Bootstrap implements BootstrapInterface
                 'translations/<id:\d+>' => $moduleId . '/default/update',
                 'translations/page/<page:\d+>' => $moduleId . '/default/index',
                 'translations' => $moduleId . '/default/index',
+                'translations/language' => $moduleId . '/language/index',
+                'translations/language/create' => $moduleId . '/language/create',
+                'translations/language/<languageId:\s+>' => $moduleId . '/language/update',
             ], false);
 
             Yii::$container->set(Pagination::class, [
