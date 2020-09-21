@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db3d3478f1d1bf9832e56e99afc99330",
+    "content-hash": "b62824f936eb4a779a25c7d1505ac9db",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -200,6 +200,69 @@
                 "source": "https://github.com/cebe/markdown"
             },
             "time": "2018-03-26T11:24:36+00:00"
+        },
+        {
+            "name": "devnullius/yii2-helper",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devnullius/yii2-helper.git",
+                "reference": "5faee7795149aec1f698871c6f8744b4bfd6958f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devnullius/yii2-helper/zipball/5faee7795149aec1f698871c6f8744b4bfd6958f",
+                "reference": "5faee7795149aec1f698871c6f8744b4bfd6958f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4 < 8.0",
+                "ramsey/uuid": "^4.1",
+                "webmozart/assert": "^1.9",
+                "yiisoft/yii2": "^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3",
+                "roave/security-advisories": "dev-master",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "devnullius\\helper\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "devnullius\\helper\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "check-style": [
+                    "phpcs src tests"
+                ],
+                "fix-style": [
+                    "phpcbf src tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "aram",
+                    "email": "aram.ds@gmail.com"
+                }
+            ],
+            "description": "Base help module for different purposes",
+            "support": {
+                "source": "https://github.com/devnullius/yii2-helper/tree/1.0.3",
+                "issues": "https://github.com/devnullius/yii2-helper/issues"
+            },
+            "time": "2020-09-21T09:35:10+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

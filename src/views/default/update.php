@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- Default box -->
 <div class="card card-outline card-success">
     <div class="card-header">
-        <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-plus']), ['create'], ['class' => 'btn btn-success']) ?>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fas fa-minus"></i></button>

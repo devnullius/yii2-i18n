@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace devnullius\i18n;
 
@@ -8,9 +9,9 @@ use yii\i18n\MissingTranslationEvent;
 
 class Module extends \yii\base\Module
 {
-    public $pageSize = 50;
+    public int $pageSize = 50;
 
-    public static function t($message, $params = [], $language = null): string
+    public static function t(string $message, array $params = [], ?string $language = null): string
     {
         return Yii::t('i18n', $message, $params, $language);
     }

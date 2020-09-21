@@ -36,11 +36,11 @@ class SourceMessage extends ActiveRecord
     public static function tableName(): string
     {
         $i18n = Yii::$app->getI18n();
-        if (!isset($i18n->sourceMessageTable)) {
+        if (!isset($i18n->sourceTable)) {
             throw new InvalidConfigException('You should configure i18n component');
         }
 
-        return $i18n->sourceMessageTable;
+        return $i18n->sourceTable;
     }
 
     /**

@@ -3,15 +3,17 @@ declare(strict_types=1);
 
 namespace devnullius\i18n\models;
 
+use devnullius\i18n\components\I18N;
 use devnullius\i18n\Module;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
+use function assert;
 
-class Message extends ActiveRecord
+final class Language extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -29,11 +31,12 @@ class Message extends ActiveRecord
     public static function tableName(): string
     {
         $i18n = Yii::$app->getI18n();
+        assert($i18n instanceof I18N);
         if (!isset($i18n->translationTable)) {
             throw new InvalidConfigException('You should configure i18n component');
         }
 
-        return $i18n->translationTable;
+        return $i18n->getTranslationTableName();
     }
 
     /**
@@ -42,9 +45,10 @@ class Message extends ActiveRecord
     public function rules(): array
     {
         return [
-            ['language', 'required'],
-            ['language', 'string', 'max' => 16],
-            ['translation', 'string'],
+            [['language_id',], 'string', 'max' => 5],
+            [['language', 'country'], 'string', 'max' => 3],
+            [['name', 'name_ascii'], 'string', 'max' => 32],
+            [['default', 'status'], 'boolean'],
         ];
     }
 
@@ -53,11 +57,22 @@ class Message extends ActiveRecord
      */
     public function attributeLabels(): array
     {
-        return [
-            'id' => Module::t('ID'),
-            'language' => Module::t('Language'),
-            'translation' => Module::t('Translation'),
-        ];
+        return ArrayHelper::merge(
+            [
+                'language_id' => Module::t('ID'),
+                'language' => Module::t('Language'),
+                'country' => Module::t('Country'),
+                'default' => Module::t('Default'),
+                'name' => Module::t('Name'),
+                'name_ascii' => Module::t('ASCII Name'),
+                'status' => Module::t('Status'),
+            ],
+            LanguageHelper::attributeLabels(
+                static function (string $message, array $params = [], ?string $language = null) {
+                    return Module::t($message, $params, $language);
+                }
+            )
+        );
     }
 
     /**
@@ -72,10 +87,5 @@ class Message extends ActiveRecord
                 'defaultValue' => -1,
             ],
         ];
-    }
-
-    public function getSourceMessage(): ActiveQuery
-    {
-        return $this->hasOne(SourceMessage::class, ['id' => 'id']);
     }
 }

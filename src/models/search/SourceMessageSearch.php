@@ -50,7 +50,7 @@ class SourceMessageSearch extends SourceMessage
      * @return ActiveDataProvider
      * @throws InvalidConfigException
      */
-    public function search($params): ActiveDataProvider
+    public function search(?array $params): ActiveDataProvider
     {
         $query = SourceMessage::find()
             ->select([

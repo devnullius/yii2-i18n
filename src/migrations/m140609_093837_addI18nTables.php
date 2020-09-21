@@ -16,12 +16,12 @@ class m140609_093837_addI18nTables extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
         $i18n = Yii::$app->getI18n();
-        if (!isset($i18n->sourceMessageTable) || !isset($i18n->messageTable)) {
+        if (!isset($i18n->sourceTable) || !isset($i18n->translationTable)) {
             throw new InvalidConfigException('You should configure i18n component');
         }
 
-        $sourceMessageTable = $i18n->sourceMessageTable;
-        $messageTable = $i18n->messageTable;
+        $sourceMessageTable = $i18n->sourceTable;
+        $messageTable = $i18n->translationTable;
 
         $this->createTable($sourceMessageTable, [
             'id' => $this->bigPrimaryKey(),
@@ -53,11 +53,11 @@ class m140609_093837_addI18nTables extends Migration
     public function safeDown()
     {
         $i18n = Yii::$app->getI18n();
-        if (!isset($i18n->sourceMessageTable) || !isset($i18n->messageTable)) {
+        if (!isset($i18n->sourceTable) || !isset($i18n->translationTable)) {
             throw new InvalidConfigException('You should configure i18n component');
         }
 
-        $this->dropTable($i18n->sourceMessageTable);
-        $this->dropTable($i18n->messageTable);
+        $this->dropTable($i18n->sourceTable);
+        $this->dropTable($i18n->translationTable);
     }
 }
