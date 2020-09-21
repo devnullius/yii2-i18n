@@ -8,6 +8,7 @@ use devnullius\i18n\Module;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\Exception;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 use function is_string;
@@ -107,11 +108,12 @@ class I18N extends \yii\i18n\I18N
              * @var $defaultLanguage string
              */
             $languageTableName = $this->getLanguageTableName();
-            $query = <<<SQL
-SELECT ' . {$languageTableName} . '.language_id FROM ' . {$languageTableName} . '
-WHERE ' . {$languageTableName} . '.deleted = false AND ' . {$languageTableName} . ' .default = true limit 1;
-SQL;
-            $defaultLanguage = Yii::$app->getDb()->createCommand($query)->queryScalar();
+            $defaultLanguage = (new Query())
+                ->select(['language_id'])
+                ->from($languageTableName)
+                ->where(['deleted' => false, 'default' => true])
+                ->limit(1)
+                ->scalar();
             if (!is_string($defaultLanguage)) {
                 throw new Exception('Reading default source language failed, fallback to ' . $this->sourceLanguage . '.');
             }
