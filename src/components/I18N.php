@@ -5,12 +5,15 @@ namespace devnullius\i18n\components;
 
 use devnullius\i18n\models\Language;
 use devnullius\i18n\Module;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 
 class I18N extends \yii\i18n\I18N
 {
+    private static array $languageList = [];
+
     public string $languageTable = '{{%language}}';
 
     public string $sourceTable = '{{%language_source}}';
@@ -18,6 +21,8 @@ class I18N extends \yii\i18n\I18N
     public string $translationTable = '{{%language_translate}}';
 
     public string $sourceLanguage = 'en-US';
+
+    public bool $showOnlyCurrentLanguage = false;
 
     public int $cachingDuration = 86400;
 
@@ -34,6 +39,7 @@ class I18N extends \yii\i18n\I18N
      */
     public function init()
     {
+        Yii::$app->sourceLanguage = $this->getDevelopSourceLanguage();
         if (!isset($this->translations['*'])) {
             $this->translations['*'] = [
                 'class' => DbMessageSource::class,
@@ -63,9 +69,12 @@ class I18N extends \yii\i18n\I18N
 
     final public static function initLanguageList(): array
     {
-        $activeLanguages = Language::find()->andWhere(['status' => true])->all();
+        if (static::$languageList === []) {
+            $activeLanguages = Language::find()->andWhere(['status' => true])->all();
+            static::$languageList = ArrayHelper::getColumn($activeLanguages, 'language_id');
+        }
 
-        return ArrayHelper::getColumn($activeLanguages, 'language_id');
+        return static::$languageList;
     }
 
     final public function getMissingTranslationHandlerPackage(): array
@@ -101,5 +110,10 @@ class I18N extends \yii\i18n\I18N
     final public function isCacheEnabled(): bool
     {
         return $this->enableCaching === true;
+    }
+
+    final public function doShowOnlyCurrentLanguage(): bool
+    {
+        return $this->showOnlyCurrentLanguage === true;
     }
 }

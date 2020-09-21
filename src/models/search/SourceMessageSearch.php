@@ -2,6 +2,7 @@
 
 namespace devnullius\i18n\models\search;
 
+use devnullius\i18n\components\I18N;
 use devnullius\i18n\models\Message;
 use devnullius\i18n\models\SourceMessage;
 use devnullius\i18n\Module;
@@ -9,6 +10,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use function assert;
 
 class SourceMessageSearch extends SourceMessage
 {
@@ -63,7 +65,11 @@ class SourceMessageSearch extends SourceMessage
             ->groupBy([SourceMessage::tableName() . '.id', Message::tableName() . '.translation'])
             ->orderBy([SourceMessage::tableName() . '.id' => SORT_DESC]);
 
-        $query->andWhere([Message::tableName() . '.language' => Yii::$app->language]);
+        $i18n = Yii::$app->getI18n();
+        assert($i18n instanceof I18N);
+        if ($i18n->doShowOnlyCurrentLanguage()) {
+            $query->andWhere([Message::tableName() . '.language' => Yii::$app->language]);
+        }
 
         $dataProvider = new ActiveDataProvider(['query' => $query]);
 
