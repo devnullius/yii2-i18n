@@ -113,6 +113,7 @@ class I18N extends \yii\i18n\I18N
                 ->from($languageTableName)
                 ->where(['deleted' => false, 'default' => true])
                 ->limit(1)
+                ->cache()
                 ->scalar();
             if (!is_string($defaultLanguage)) {
                 throw new Exception('Reading default source language failed, fallback to ' . $this->sourceLanguage . '.');
