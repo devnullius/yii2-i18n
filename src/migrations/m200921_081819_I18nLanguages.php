@@ -16,7 +16,7 @@ class m200921_081819_I18nLanguages extends Migration
      * {@inheritdoc}
      * @throws InvalidConfigException
      */
-    public function safeUp()
+    public function up()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -128,7 +128,7 @@ class m200921_081819_I18nLanguages extends Migration
      * {@inheritdoc}
      * @throws InvalidConfigException
      */
-    public function safeDown()
+    public function down()
     {
         $i18n = Yii::$app->getI18n();
         assert($i18n instanceof I18N);

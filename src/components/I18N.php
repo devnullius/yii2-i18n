@@ -17,11 +17,11 @@ class I18N extends \yii\i18n\I18N
 {
     private static array $languageList = [];
 
-    public string $languageTable = '{{%language}}';
+    public string $languageTable = '{{%i18n_language}}';
 
-    public string $sourceTable = '{{%language_source}}';
+    public string $sourceTable = '{{%i18n_language_source}}';
 
-    public string $translationTable = '{{%language_translate}}';
+    public string $translationTable = '{{%i18n_language_translate}}';
 
     public string $sourceLanguage = 'en-US';
 
